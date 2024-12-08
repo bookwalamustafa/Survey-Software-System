@@ -58,7 +58,7 @@ public class Survey implements Serializable {
 		}
 
 		Question question = questions.get(questionNumber - 1);
-		question.modifyQuestion();
+		question.modifyQuestion("Survey");
 	}
 
 	private int getQuestionNumber(Scanner scanner) {
@@ -97,5 +97,9 @@ public class Survey implements Serializable {
 		String fileName = generateFileName();
 		System.out.println("Survey has been saved!");
 		SerializationHelper.serialize(Survey.class, survey, basePath, name + fileName);
+	}
+
+	public void tabulateSurvey() {
+
 	}
 }
