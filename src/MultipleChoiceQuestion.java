@@ -2,11 +2,12 @@ import java.util.*;
 
 public class MultipleChoiceQuestion extends Question {
 	private static final long serialVersionUID = 1L;
+	public static String correctAnswer = "";
 	private List<String> choices;
 	private int maxAnswers;
 
 	public MultipleChoiceQuestion(String prompt) {
-		super(prompt);
+		super(prompt, correctAnswer);
 		this.choices = new ArrayList<>();
 	}
 
@@ -71,9 +72,12 @@ public class MultipleChoiceQuestion extends Question {
 	}
 
 	@Override
-	public void modifyQuestion() {
+	public void modifyQuestion(String Survey_or_Test) {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Current prompt: " + prompt);
+		if (Survey_or_Test.equals("Test")) {
+			System.out.println("Current correct answer: " + correctAnswer);
+		}
 
 		while (true) {
 			System.out.print("Enter new prompt (or press Enter to keep the current one): ");
@@ -87,7 +91,7 @@ public class MultipleChoiceQuestion extends Question {
 		}
 
 		while (true) {
-			System.out.print("Current number of correct answers allowed: " + maxAnswers
+			System.out.print("Current number of options allowed: " + maxAnswers
 					+ ". Enter new value (or press Enter to keep): ");
 			String input = scanner.nextLine().trim();
 			if (input.isEmpty()) {
@@ -157,6 +161,21 @@ public class MultipleChoiceQuestion extends Question {
 		}
 
 		System.out.println("Multiple Choice question updated.");
+
+		if (Survey_or_Test.equals("Test")) {
+			while (true) {
+				System.out.print("Update current correct answer (or press Enter to keep the current answer): ");
+				String newCorrectAnswer = scanner.nextLine().trim();
+
+				if (newCorrectAnswer.isEmpty()) {
+					break;
+				} else {
+					correctAnswer = getResponse();
+					break;
+				}
+			}
+			System.out.println("Multiple Choice correct answer updated.");
+		}
 	}
 
 	@Override
@@ -181,7 +200,7 @@ public class MultipleChoiceQuestion extends Question {
 		return response;
 	}
 
-	private boolean isValidChoice(String response, Set<Character> validOptions) {
+	boolean isValidChoice(String response, Set<Character> validOptions) {
 		String[] inputs = response.split("[,\\s]+");
 		Set<Character> selectedOptions = new HashSet<>();
 
