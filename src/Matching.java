@@ -2,10 +2,11 @@ import java.util.*;
 
 public class Matching extends Question {
 	private static final long serialVersionUID = 1L;
+	private static String correctAnswer = "";
 	private Map<String, String> pairs;
 
 	public Matching(String prompt) {
-		super(prompt);
+		super(prompt, correctAnswer);
 		this.pairs = new HashMap<>();
 	}
 
@@ -67,9 +68,12 @@ public class Matching extends Question {
 	}
 
 	@Override
-	public void modifyQuestion() {
+	public void modifyQuestion(String Survey_or_Test) {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Current prompt: " + prompt);
+		if (Survey_or_Test.equals("Test")) {
+			System.out.println("Currrent correct answer: " + correctAnswer);
+		}
 
 		while (true) {
 			System.out.print("Enter new prompt (or press Enter to keep the current one): ");
@@ -163,6 +167,21 @@ public class Matching extends Question {
 		}
 
 		System.out.println("Matching question updated.");
+
+		if (Survey_or_Test.equals("Test")) {
+			while (true) {
+				System.out.print("Update current correct answer (or press Enter to keep the current answer): ");
+				String newCorrectAnswer = scanner.nextLine().trim();
+
+				if (newCorrectAnswer.isEmpty()) {
+					break;
+				} else {
+					correctAnswer = getResponse();
+					break;
+				}
+			}
+			System.out.println("Matching correct answer updated.");
+		}
 	}
 
 	@Override
@@ -246,6 +265,10 @@ public class Matching extends Question {
 		}
 
 		return "Matching responses recorded";
+	}
+
+	public Map<String, String> getPairs() {
+		return new HashMap<>(pairs); // Return a copy to preserve encapsulation
 	}
 
 }
