@@ -2,9 +2,10 @@ import java.util.Scanner;
 
 public class TrueFalse extends Question {
 	private static final long serialVersionUID = 1L;
+	private static String correctAnswer = "";
 
 	public TrueFalse(String prompt) {
-		super(prompt);
+		super(prompt, correctAnswer);
 	}
 
 	@Override
@@ -27,9 +28,12 @@ public class TrueFalse extends Question {
 	}
 
 	@Override
-	public void modifyQuestion() {
+	public void modifyQuestion(String Survey_or_Test) {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Current prompt: " + prompt);
+		if (Survey_or_Test.equals("Test")) {
+			System.out.println("Current correct answer: " + correctAnswer);
+		}
 
 		while (true) {
 			System.out.print("Enter new prompt (or press Enter to keep the current one): ");
@@ -46,6 +50,21 @@ public class TrueFalse extends Question {
 			} else {
 				System.out.println("Please enter a valid prompt.");
 			}
+		}
+
+		if (Survey_or_Test.equals("Test")) {
+			while (true) {
+				System.out.print("Update current correct answer (or press Enter to keep the current answer): ");
+				String newCorrectAnswer = scanner.nextLine().trim();
+
+				if (newCorrectAnswer.isEmpty()) {
+					break;
+				} else {
+					correctAnswer = getResponse();
+					break;
+				}
+			}
+			System.out.println("True/False correct answer updated.");
 		}
 	}
 
