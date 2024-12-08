@@ -2,9 +2,10 @@ import java.util.Scanner;
 
 public class ValidDate extends Question {
 	private static final long serialVersionUID = 1L;
+	private static String correctAnswer = "";
 
 	public ValidDate(String prompt) {
-		super(prompt);
+		super(prompt, correctAnswer);
 	}
 
 	@Override
@@ -27,9 +28,12 @@ public class ValidDate extends Question {
 	}
 
 	@Override
-	public void modifyQuestion() {
+	public void modifyQuestion(String Survey_or_Test) {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Current prompt: " + prompt);
+		if (Survey_or_Test.equals("Test")) {
+			System.out.println("Current correct answer: " + correctAnswer);
+		}
 
 		while (true) {
 			System.out.print("Enter new prompt (or press Enter to keep the current one): ");
@@ -47,6 +51,21 @@ public class ValidDate extends Question {
 				System.out.println("Please enter a valid prompt.");
 			}
 		}
+
+		if (Survey_or_Test.equals("Test")) {
+			while (true) {
+				System.out.print("Update current correct answer (or press Enter to keep the current answer): ");
+				String newCorrectAnswer = scanner.nextLine().trim();
+
+				if (newCorrectAnswer.isEmpty()) {
+					break;
+				} else {
+					correctAnswer = getResponse();
+					break;
+				}
+			}
+			System.out.println("Date correct answer updated.");
+		}
 	}
 
 	@Override
@@ -60,7 +79,7 @@ public class ValidDate extends Question {
 		return response;
 	}
 
-	private boolean isValidDate(String date) {
+	boolean isValidDate(String date) {
 		String regex = "^\\d{4}-\\d{2}-\\d{2}$";
 		if (!date.matches(regex)) {
 			System.out.println("Error: Date must be in YYYY-MM-DD format.");
